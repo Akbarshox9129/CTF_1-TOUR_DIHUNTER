@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import json, os, hashlib, datetime
 
-app = Flask(__name__)
+app = Flask(name)
 app.secret_key = "supersecret"
 
 DATA_FILE = os.path.join("storage", "data.json")
