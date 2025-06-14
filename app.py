@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import json, os, hashlib, datetime
 
-app = Flask(name)
+app = Flask(__name__)
 app.secret_key = "supersecret"
 
 DATA_FILE = os.path.join("storage", "data.json")
@@ -204,5 +204,5 @@ def admin_submissions():
                 submissions[file] = f.readlines()
     return jsonify(submissions)
 
-if name == "__main__":
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80, debug=True)
