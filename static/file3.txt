@@ -1,1 +1,4 @@
-Sizga notanish va qiziquvchan inson telegram akkaunti beriladi. Uning qiziquvchanligi har xil ilovalarni ko’rishdan iborat. Ushbu ma’lumotlarni bilgan holda siz bu insonning email manzilini va login, parollarini aniqlab olishingiz kerak bo’ladi.
+Sizga notanish va qiziquvchan inson telegram akkaunti beriladi. Uning qiziquvchanligi har xil ilovalarni ko’rishdan iborat.
+U judayam sodda va qiziquvchan siz tashlagan har qanday linkka bosib ko'rishga harakat qiladi.
+Ushbu ma’lumotlarni bilgan holda siz bu insonning email manzilini va login, parollarini aniqlab olishingiz kerak bo’ladi.
+telegram user: http://t.me/DiHunteruser  

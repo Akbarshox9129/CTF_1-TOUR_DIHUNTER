@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 import json, os, hashlib, datetime
 
 app = Flask(__name__)
@@ -10,7 +10,7 @@ STAGES_DIR = os.path.join("storage", "stages")
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(STAGES_DIR, exist_ok=True)
 
-admin_password = "454545"
+admin_password = "454545!@#"
 
 def load_data():
     if os.path.exists(DATA_FILE):
@@ -124,8 +124,9 @@ def ctf_stage(num):
         save_data(data)
 
     return render_template(f"stage{num}.html", num=num)
-@app.route("/stage/7", methods=["GET", "POST"])
-def ctf_stage_7():
+
+@app.route("/stage/4", methods=["GET", "POST"])
+def ctf_stage_4():
     if "username" not in session:
         return redirect(url_for("login"))
 
@@ -138,13 +139,13 @@ def ctf_stage_7():
 
     if request.method == "POST":
         action = request.form.get("action")
-        user["attempts"]["7"] = user["attempts"].get("7", 0) + 1
+        user["attempts"]["4"] = user["attempts"].get("4", 0) + 1
         user["last_action"] = str(datetime.datetime.now())
 
         if action == "submit_flag":
             submitted_pass = request.form.get("flag_input", "").strip()
-            correct_password = "secret"  # ✅ Parol shu faylda yashiringan bo'ladi
-            save_stage_submission(username, "7", submitted_pass)
+            correct_password = "secret"
+            save_stage_submission(username, "4", submitted_pass)
 
             log_file = os.path.join(LOG_DIR, "stage7_submissions.txt")
             with open(log_file, "a", encoding="utf-8") as f:
@@ -154,19 +155,19 @@ def ctf_stage_7():
                 message = "✅ To‘g‘ri parol! Siz muvaffaqiyatli topdingiz."
                 success = True
                 if 7 >= user["stage"]:
-                    user["stage"] = 8
+                    user["stage"] = 5
             else:
                 message = "❌ Noto‘g‘ri parol. Qayta urinib ko‘ring."
 
         elif request.args.get("action") == "skip":
             if 7 >= user["stage"]:
-                user["stage"] = 8
+                user["stage"] = 5
             save_data(data)
             return redirect(url_for("ctf_stage", num="8"))
 
         save_data(data)
 
-    return render_template("stage7.html", message=message, success=success)
+    return render_template("stage4.html", message=message, success=success)
 
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
@@ -190,6 +191,18 @@ def admin_dashboard():
     data = load_data()
     return render_template("admin.html", data=data)
 
+# 🔁 AJAX uchun flag loglarini yuboruvchi route
+@app.route("/admin/submissions")
+def admin_submissions():
+    if not session.get("admin"):
+        return "No access", 403
+
+    submissions = {}
+    for file in os.listdir(LOG_DIR):
+        if file.endswith(".txt"):
+            with open(os.path.join(LOG_DIR, file), "r", encoding="utf-8") as f:
+                submissions[file] = f.readlines()
+    return jsonify(submissions)
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80, debug=True)
-
