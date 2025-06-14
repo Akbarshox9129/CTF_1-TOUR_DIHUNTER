@@ -204,5 +204,5 @@ def admin_submissions():
                 submissions[file] = f.readlines()
     return jsonify(submissions)
 
-if __name__ == "__main__":
+if name == "__main__":
     app.run(host="0.0.0.0", port=80, debug=True)
